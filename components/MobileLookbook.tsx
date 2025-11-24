@@ -61,6 +61,12 @@ export const DEFAULT_CATEGORIES: Category[] = [
     title: 'Shades',
     image: 'https://framerusercontent.com/images/BE5Qk2QMqtw9gRXaDjFMkAZnLA.png?width=1024&height=945',
     description: 'Cellular, roller, and woven styles.'
+  },
+  {
+    id: 'cat_factory',
+    title: 'Factory',
+    image: 'https://framerusercontent.com/images/N0ew03Y7rvyw5FFYNpyEY0T79I.png?width=1024&height=976', // Placeholder using shutter image until video thumb provided
+    description: 'View our production factory.'
   }
 ];
 
@@ -225,6 +231,21 @@ export const DEFAULT_PRODUCTS: Product[] = [
     primaryCtaLabel: 'Book Consultation',
     secondaryCtaLabel: 'Details',
     relatedProductIds: ['pleated-shades', 'cellular-shades', 'layered-zebra-shades']
+  },
+
+  // --- FACTORY (PLACEHOLDER) ---
+  {
+    id: 'factory-tour',
+    categoryId: 'cat_factory',
+    name: 'Factory Production Tour',
+    collection: 'Behind the Scenes',
+    imageUrl: 'https://framerusercontent.com/images/N0ew03Y7rvyw5FFYNpyEY0T79I.png?width=1024&height=976', // Placeholder
+    shortDescription: 'Witness the craftsmanship and technology behind our custom shutters.',
+    longDescription: 'Take a virtual tour of our state-of-the-art production facility. See how our skilled artisans combine traditional craftsmanship with modern technology to create the world\'s finest window treatments.',
+    features: ['State-of-the-Art', 'Hand-Finished', 'Quality Control'],
+    primaryCtaLabel: 'Book Consultation',
+    secondaryCtaLabel: 'Watch Video',
+    relatedProductIds: []
   }
 ];
 
@@ -393,7 +414,10 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
     setSelectedCategoryId(catId);
     setActiveIndex(0);
     setViewState('PRODUCT_SWIPE');
-    setShowTutorial(true);
+    // Show tutorial only if it's NOT the factory category (assuming factory is just a video)
+    if (catId !== 'cat_factory') {
+        setShowTutorial(true);
+    }
   };
 
   const handleBackToCategories = () => {
@@ -523,11 +547,11 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
 
              {/* Top Banner Text Box */}
              <div className="absolute top-16 md:top-24 left-0 w-full z-20 px-6 pointer-events-none flex justify-center">
-                <div className="bg-[#FCEAAC]/10 backdrop-blur-md border border-[#FCEAAC]/10 rounded-xl p-3 md:p-4 text-center shadow-lg pointer-events-auto max-w-lg">
-                  <p className="text-[#FCEAAC] text-xs md:text-sm font-sans font-bold tracking-wide leading-relaxed mb-1">
+                <div className="bg-[#FCEAAC]/80 backdrop-blur-md border border-[#4A0404]/20 rounded-xl p-3 md:p-4 text-center shadow-lg pointer-events-auto max-w-lg">
+                  <p className="text-[#4A0404] text-xs md:text-sm font-sans font-bold tracking-wide leading-relaxed mb-1">
                     We bring the showroom to you.<br/>Pick the products you like & we'll see you soon!
                   </p>
-                  <a href="tel:3058279333" className="text-[#FCEAAC] text-xs md:text-sm font-sans font-bold tracking-wide border-b border-[#FCEAAC]/50 hover:border-[#FCEAAC] transition-colors pb-0.5">
+                  <a href="tel:3058279333" className="text-[#4A0404] text-xs md:text-sm font-sans font-bold tracking-wide border-b border-[#4A0404]/50 hover:border-[#4A0404] transition-colors pb-0.5">
                     Questions? Call (305) 827-9333
                   </a>
                 </div>
