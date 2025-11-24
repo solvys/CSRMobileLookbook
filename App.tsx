@@ -20,7 +20,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <main className="min-h-screen w-full bg-[#FCEAAC] flex items-center justify-center">
+    <main className="h-[100dvh] w-full bg-[#FCEAAC] overflow-hidden">
       <MobileLookbook 
         landingTitle="Design Your View"
         landingSubtitle="Select a style to get started."

@@ -241,6 +241,12 @@ const ChevronLeft = ({ className }: { className?: string }) => (
   </svg>
 );
 
+const ChevronRight = ({ className }: { className?: string }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className={className}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+  </svg>
+);
+
 const GlobeIcon = ({ className }: { className?: string }) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className={className}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
@@ -280,7 +286,7 @@ const LazyImage = ({ src, alt, className }: { src: string; alt: string; classNam
         animate={{ opacity: isLoaded ? 1 : 0, scale: isLoaded ? 1 : 1.05 }}
         transition={{ duration: 0.7, ease: "easeOut" }}
         onLoad={() => setIsLoaded(true)}
-        className="w-full h-full object-cover"
+        className={`w-full h-full object-cover ${!isLoaded ? 'opacity-0' : 'opacity-100'}`}
       />
     </div>
   );
@@ -301,7 +307,7 @@ const DetailsModal = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="absolute inset-0 z-50 flex items-end justify-center bg-[#4A0404]/60 backdrop-blur-sm"
+      className="absolute inset-0 z-50 flex items-end justify-center bg-[#4A0404]/60 backdrop-blur-sm p-0 md:p-8"
       onClick={onClose}
     >
       <motion.div
@@ -309,14 +315,14 @@ const DetailsModal = ({
         animate={{ y: 0 }}
         exit={{ y: "100%" }}
         transition={{ type: "spring", damping: 25, stiffness: 300 }}
-        className="bg-[#FCEAAC] w-full rounded-t-3xl overflow-hidden flex flex-col max-h-[85dvh]"
+        className="bg-[#FCEAAC] w-full md:max-w-2xl md:rounded-3xl rounded-t-3xl overflow-hidden flex flex-col max-h-[85dvh] md:max-h-[90dvh]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
         <div className="p-6 border-b border-[#4A0404]/10 flex justify-between items-start bg-[#FCEAAC]">
           <div>
             <p className="text-xs font-bold tracking-[0.2em] text-[#4A0404]/60 uppercase mb-1 font-sans">{product.collection}</p>
-            <h2 className="text-2xl font-playfair italic font-semibold text-[#4A0404]">{product.name}</h2>
+            <h2 className="text-2xl md:text-3xl font-playfair italic font-semibold text-[#4A0404]">{product.name}</h2>
           </div>
           <button onClick={onClose} className="p-2 bg-[#FCEAAC] rounded-full shadow-sm border border-[#4A0404]/20 hover:bg-[#F3E5A0]">
             <CloseIcon className="w-5 h-5 text-[#4A0404]" />
@@ -325,14 +331,14 @@ const DetailsModal = ({
 
         {/* Content */}
         <div className="p-6 overflow-y-auto flex-1">
-          <p className="text-xl font-cormorant italic font-semibold text-[#4A0404] leading-relaxed mb-6">
+          <p className="text-xl md:text-2xl font-cormorant italic font-semibold text-[#4A0404] leading-relaxed mb-6">
             {product.longDescription || product.shortDescription}
           </p>
           
           <h3 className="text-sm font-bold font-sans uppercase tracking-wider text-[#4A0404] mb-3">Key Features</h3>
           <ul className="space-y-2 mb-8">
             {product.features.map((feature, idx) => (
-              <li key={idx} className="flex items-center text-[#4A0404]/90 font-sans text-sm">
+              <li key={idx} className="flex items-center text-[#4A0404]/90 font-sans text-sm md:text-base">
                 <span className="w-1.5 h-1.5 bg-[#4A0404] rounded-full mr-3" />
                 {feature}
               </li>
@@ -361,8 +367,8 @@ const DetailsModal = ({
 export const MobileLookbook: React.FC<MobileLookbookProps> = ({
   categories = DEFAULT_CATEGORIES,
   products = DEFAULT_PRODUCTS,
-  landingTitle = "What are you looking for?",
-  landingSubtitle = "Select a category to browse our collection.",
+  landingTitle = "Design Your View",
+  landingSubtitle = "Select a style to get started.",
   onPrimaryCtaClick,
   onSecondaryCtaClick,
   onCardChange,
@@ -431,7 +437,7 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
   const nextProduct = filteredProducts[(activeIndex + 1) % filteredProducts.length];
 
   return (
-    <div className="relative w-full max-w-[450px] h-[100dvh] mx-auto bg-[#FCEAAC] overflow-hidden shadow-2xl flex flex-col">
+    <div className="relative w-full h-[100dvh] bg-[#FCEAAC] overflow-hidden shadow-2xl flex flex-col">
       
       {/* --- CATEGORY SELECTION VIEW --- */}
       <AnimatePresence mode="wait">
@@ -442,27 +448,27 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: ANIMATION_DURATION }}
-            className="flex-1 flex flex-col p-6 bg-[#FCEAAC] overflow-y-auto"
+            className="flex-1 flex flex-col p-6 md:p-12 bg-[#FCEAAC] overflow-y-auto"
           >
-            <header className="mt-8 mb-8 text-center">
-              <p className="text-xs font-bold tracking-[0.2em] text-[#4A0404]/60 uppercase mb-2 font-sans">Welcome to our mobile look book!</p>
-              <h1 className="text-4xl font-playfair italic font-semibold text-[#4A0404]">{landingTitle}</h1>
-              <p className="text-[#4A0404]/80 mt-3 font-cormorant italic font-semibold text-2xl">{landingSubtitle}</p>
+            <header className="mt-8 mb-8 md:mb-16 text-center">
+              <p className="text-xs md:text-sm font-bold tracking-[0.2em] text-[#4A0404]/60 uppercase mb-2 font-sans">WELCOME TO OUR MOBILE LOOK BOOK!</p>
+              <h1 className="text-4xl md:text-6xl font-playfair italic font-semibold text-[#4A0404]">{landingTitle}</h1>
+              <p className="text-[#4A0404]/80 mt-3 font-cormorant italic font-semibold text-2xl md:text-3xl">{landingSubtitle}</p>
             </header>
 
-            <div className="grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 max-w-7xl mx-auto w-full">
               {categories.map((cat) => (
                 <motion.button
                   key={cat.id}
                   onClick={() => handleSelectCategory(cat.id)}
-                  className="group relative h-40 w-full rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow text-left"
+                  className="group relative h-40 md:h-96 w-full rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow text-left"
                   whileTap={{ scale: 0.98 }}
                 >
-                  <LazyImage src={cat.image} alt={cat.title} className="absolute inset-0 w-full h-full" />
+                  <LazyImage src={cat.image} alt={cat.title} className="absolute inset-0 w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#4A0404]/80 via-[#4A0404]/20 to-transparent" />
-                  <div className="absolute bottom-0 left-0 p-5">
-                    <h2 className="text-[#FCEAAC] text-3xl font-playfair italic font-semibold">{cat.title}</h2>
-                    {cat.description && <p className="text-[#FCEAAC]/90 text-xl mt-1 font-cormorant italic font-semibold">{cat.description}</p>}
+                  <div className="absolute bottom-0 left-0 p-5 md:p-8">
+                    <h2 className="text-[#FCEAAC] text-3xl md:text-4xl font-playfair italic font-semibold">{cat.title}</h2>
+                    {cat.description && <p className="text-[#FCEAAC]/90 text-xl md:text-2xl mt-1 font-cormorant italic font-semibold">{cat.description}</p>}
                   </div>
                 </motion.button>
               ))}
@@ -474,7 +480,7 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
                     <img 
                         src="https://framerusercontent.com/images/ZPV33DOx8vGwYSUrjTMF6nwKaxg.png?scale-down-to=512&width=1536&height=1024" 
                         alt="California Shutters" 
-                        className="h-32 w-auto object-contain" 
+                        className="h-64 w-auto object-contain" 
                     />
                 </a>
             </footer>
@@ -493,35 +499,35 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
             className="flex-1 flex flex-col relative bg-[#FCEAAC] h-full"
           >
              {/* Header Navigation */}
-             <div className="absolute top-0 left-0 w-full z-20 p-4 flex items-center justify-between bg-gradient-to-b from-[#4A0404]/40 to-transparent pointer-events-none">
+             <div className="absolute top-0 left-0 w-full z-20 p-4 md:p-8 flex items-center justify-between bg-gradient-to-b from-[#4A0404]/40 to-transparent pointer-events-none">
                 <div className="pointer-events-auto">
                     <button 
                     onClick={handleBackToCategories}
-                    className="text-[#FCEAAC] flex items-center gap-1 text-sm font-medium backdrop-blur-md bg-[#4A0404]/20 px-3 py-1.5 rounded-full hover:bg-[#4A0404]/40 transition-colors font-sans"
+                    className="text-[#FCEAAC] flex items-center gap-1 text-sm md:text-base font-medium backdrop-blur-md bg-[#4A0404]/20 px-3 py-1.5 md:px-5 md:py-2.5 rounded-full hover:bg-[#4A0404]/40 transition-colors font-sans"
                     >
-                    <ChevronLeft className="w-4 h-4" />
+                    <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
                     Back
                     </button>
                 </div>
                 
                 {/* Pagination Dots */}
-                <div className="flex gap-1">
+                <div className="flex gap-1 md:gap-2">
                   {filteredProducts.map((_, i) => (
                     <div 
                       key={i} 
-                      className={`h-1 rounded-full transition-all duration-300 ${i === activeIndex ? 'w-4 bg-[#FCEAAC]' : 'w-1 bg-[#FCEAAC]/50'}`} 
+                      className={`h-1 rounded-full transition-all duration-300 ${i === activeIndex ? 'w-4 md:w-6 bg-[#FCEAAC]' : 'w-1 md:w-2 bg-[#FCEAAC]/50'}`} 
                     />
                   ))}
                 </div>
              </div>
 
              {/* Top Banner Text Box */}
-             <div className="absolute top-16 left-0 w-full z-20 px-6 pointer-events-none">
-                <div className="bg-[#FCEAAC]/10 backdrop-blur-md border border-[#FCEAAC]/10 rounded-xl p-3 text-center shadow-lg pointer-events-auto">
-                  <p className="text-[#FCEAAC] text-xs font-sans font-bold tracking-wide leading-relaxed mb-1">
+             <div className="absolute top-16 md:top-24 left-0 w-full z-20 px-6 pointer-events-none flex justify-center">
+                <div className="bg-[#FCEAAC]/10 backdrop-blur-md border border-[#FCEAAC]/10 rounded-xl p-3 md:p-4 text-center shadow-lg pointer-events-auto max-w-lg">
+                  <p className="text-[#FCEAAC] text-xs md:text-sm font-sans font-bold tracking-wide leading-relaxed mb-1">
                     We bring the showroom to you.<br/>Pick the products you like & we'll see you soon!
                   </p>
-                  <a href="tel:3058279333" className="text-[#FCEAAC] text-xs font-sans font-bold tracking-wide border-b border-[#FCEAAC]/50 hover:border-[#FCEAAC] transition-colors pb-0.5">
+                  <a href="tel:3058279333" className="text-[#FCEAAC] text-xs md:text-sm font-sans font-bold tracking-wide border-b border-[#FCEAAC]/50 hover:border-[#FCEAAC] transition-colors pb-0.5">
                     Questions? Call (305) 827-9333
                   </a>
                 </div>
@@ -540,36 +546,36 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
               >
                 {/* Product Image */}
                 <div className="h-full w-full relative">
-                    <LazyImage src={currentProduct.imageUrl} alt={currentProduct.name} className="h-full w-full" />
+                    <LazyImage src={currentProduct.imageUrl} alt={currentProduct.name} className="h-full w-full object-cover" />
                     {/* Gradient overlay for text readability */}
                     <div className="absolute bottom-0 left-0 w-full h-2/3 bg-gradient-to-t from-[#4A0404]/90 via-[#4A0404]/40 to-transparent pointer-events-none" />
                 </div>
 
                 {/* Content Overlay (Tinder Style) */}
-                <div className="absolute bottom-0 left-0 w-full p-6 pb-24 pointer-events-none">
+                <div className="absolute bottom-0 left-0 w-full p-6 pb-24 md:p-12 md:pb-32 pointer-events-none">
                    <motion.div 
                       initial={{ y: 20, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
-                      className="text-[#FCEAAC]"
+                      className="text-[#FCEAAC] max-w-[90%] md:max-w-4xl"
                    >
                       <div className="flex items-center justify-between mb-2">
                         {currentProduct.collection && (
-                           <span className="text-xs text-[#FCEAAC]/80 font-sans uppercase tracking-widest mb-1 block">
+                           <span className="text-xs md:text-sm text-[#FCEAAC]/80 font-sans uppercase tracking-widest mb-1 block">
                               {currentProduct.collection}
                            </span>
                         )}
                       </div>
-                      <h2 className="text-5xl font-playfair italic font-semibold leading-tight mb-2 shadow-[#4A0404] drop-shadow-lg">
+                      <h2 className="text-5xl md:text-7xl font-playfair italic font-semibold leading-tight mb-2 shadow-[#4A0404] drop-shadow-lg">
                         {currentProduct.name}
                       </h2>
-                      <p className="text-[#FCEAAC]/90 text-2xl font-cormorant italic font-semibold leading-tight max-w-[90%] mb-4">
+                      <p className="text-[#FCEAAC]/90 text-2xl md:text-4xl font-cormorant italic font-semibold leading-tight max-w-[90%] mb-4">
                         {currentProduct.shortDescription}
                       </p>
                       
                       {/* Features Pills */}
                       <div className="flex flex-wrap gap-2 mb-4">
                         {currentProduct.features.slice(0,3).map((feat, i) => (
-                          <span key={i} className="text-xs bg-[#4A0404]/40 backdrop-blur-md text-[#FCEAAC] px-2.5 py-1 rounded-md border border-[#FCEAAC]/10 font-sans tracking-wide">
+                          <span key={i} className="text-xs md:text-sm bg-[#4A0404]/40 backdrop-blur-md text-[#FCEAAC] px-2.5 py-1 rounded-md border border-[#FCEAAC]/10 font-sans tracking-wide">
                             {feat}
                           </span>
                         ))}
@@ -582,14 +588,34 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
                   <img src={nextProduct.imageUrl} alt="preload" className="hidden" />
                 )}
               </motion.div>
+              
+              {/* DESKTOP/TABLET NAVIGATION ARROWS */}
+              {/* Previous Button - Hidden on mobile, visible on medium+ screens */}
+              <button 
+                onClick={(e) => { e.stopPropagation(); changeIndex(activeIndex - 1); }}
+                className="hidden md:flex absolute left-6 top-1/2 -translate-y-1/2 z-30 w-16 h-16 rounded-full bg-[#4A0404]/20 backdrop-blur-md border border-[#FCEAAC]/20 text-[#FCEAAC] items-center justify-center hover:bg-[#4A0404]/40 transition-all shadow-lg active:scale-95"
+                aria-label="Previous Product"
+              >
+                 <ChevronLeft className="w-8 h-8" />
+              </button>
+
+              {/* Next Button - Hidden on mobile, visible on medium+ screens */}
+              <button 
+                onClick={(e) => { e.stopPropagation(); changeIndex(activeIndex + 1); }}
+                className="hidden md:flex absolute right-6 top-1/2 -translate-y-1/2 z-30 w-16 h-16 rounded-full bg-[#4A0404]/20 backdrop-blur-md border border-[#FCEAAC]/20 text-[#FCEAAC] items-center justify-center hover:bg-[#4A0404]/40 transition-all shadow-lg active:scale-95"
+                aria-label="Next Product"
+              >
+                 <ChevronRight className="w-8 h-8" />
+              </button>
+
             </div>
             
             {/* Bottom Actions */}
-            <div className="absolute bottom-0 w-full p-6 bg-gradient-to-t from-[#4A0404] to-transparent z-30 pt-12">
-                 <div className="flex gap-3">
+            <div className="absolute bottom-0 w-full p-6 md:p-10 bg-gradient-to-t from-[#4A0404] to-transparent z-30 pt-12 flex justify-center md:justify-start">
+                 <div className="flex gap-3 w-full md:w-auto md:min-w-[400px]">
                     <button 
                       onClick={() => onPrimaryCtaClick?.(currentProduct, activeIndex)}
-                      className="flex-1 bg-[#FCEAAC] text-[#4A0404] font-bold py-3.5 px-4 rounded-full shadow-lg active:scale-[0.98] transition-transform text-sm font-sans tracking-wide uppercase"
+                      className="flex-1 bg-[#FCEAAC] text-[#4A0404] font-bold py-3.5 px-6 rounded-full shadow-lg active:scale-[0.98] transition-transform text-sm md:text-base font-sans tracking-wide uppercase"
                     >
                       {currentProduct.primaryCtaLabel}
                     </button>
@@ -599,7 +625,7 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
                           onSecondaryCtaClick?.(currentProduct, activeIndex);
                           setShowDetails(true);
                         }}
-                         className="bg-[#FCEAAC]/20 backdrop-blur-md border border-[#FCEAAC]/30 text-[#FCEAAC] font-bold py-3.5 px-6 rounded-full active:bg-[#FCEAAC]/30 transition-colors text-sm font-sans tracking-wide uppercase"
+                         className="bg-[#FCEAAC]/20 backdrop-blur-md border border-[#FCEAAC]/30 text-[#FCEAAC] font-bold py-3.5 px-6 rounded-full active:bg-[#FCEAAC]/30 transition-colors text-sm md:text-base font-sans tracking-wide uppercase"
                       >
                         {currentProduct.secondaryCtaLabel}
                       </button>
@@ -611,10 +637,10 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
             <motion.a
               href="tel:3058279333"
               whileTap={{ scale: 0.9 }}
-              className="absolute bottom-52 right-6 z-30 w-12 h-12 bg-[#FCEAAC]/10 backdrop-blur-md border border-[#FCEAAC]/30 text-[#FCEAAC] rounded-full shadow-2xl flex items-center justify-center hover:bg-[#FCEAAC]/20 transition-colors"
+              className="absolute bottom-52 right-6 md:bottom-32 md:right-12 z-30 w-12 h-12 md:w-16 md:h-16 bg-[#FCEAAC]/10 backdrop-blur-md border border-[#FCEAAC]/30 text-[#FCEAAC] rounded-full shadow-2xl flex items-center justify-center hover:bg-[#FCEAAC]/20 transition-colors"
               aria-label="Call Us"
             >
-              <PhoneIcon className="w-5 h-5" />
+              <PhoneIcon className="w-5 h-5 md:w-7 md:h-7" />
             </motion.a>
 
             {/* Globe Link Button */}
@@ -623,10 +649,10 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
               target="_blank"
               rel="noopener noreferrer"
               whileTap={{ scale: 0.9 }}
-              className="absolute bottom-36 right-6 z-30 w-12 h-12 bg-[#FCEAAC]/10 backdrop-blur-md border border-[#FCEAAC]/30 text-[#FCEAAC] rounded-full shadow-2xl flex items-center justify-center hover:bg-[#FCEAAC]/20 transition-colors"
+              className="absolute bottom-36 right-6 md:bottom-12 md:right-12 z-30 w-12 h-12 md:w-16 md:h-16 bg-[#FCEAAC]/10 backdrop-blur-md border border-[#FCEAAC]/30 text-[#FCEAAC] rounded-full shadow-2xl flex items-center justify-center hover:bg-[#FCEAAC]/20 transition-colors"
               aria-label="Visit Shop"
             >
-              <GlobeIcon className="w-6 h-6" />
+              <GlobeIcon className="w-6 h-6 md:w-8 md:h-8" />
             </motion.a>
 
           </motion.div>
@@ -647,21 +673,21 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
                initial={{ scale: 0.9, opacity: 0 }}
                animate={{ scale: 1, opacity: 1 }}
                transition={{ delay: 0.1 }}
-               className="text-[#FCEAAC] max-w-xs"
+               className="text-[#FCEAAC] max-w-md"
              >
-                <div className="w-16 h-16 bg-[#FCEAAC]/10 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
-                   <DoubleTapIcon className="w-8 h-8 text-[#FCEAAC]" />
+                <div className="w-16 h-16 md:w-20 md:h-20 bg-[#FCEAAC]/10 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
+                   <DoubleTapIcon className="w-8 h-8 md:w-10 md:h-10 text-[#FCEAAC]" />
                 </div>
-                <h3 className="text-4xl font-playfair italic font-semibold mb-3">How to browse</h3>
-                <p className="text-[#FCEAAC]/80 mb-6 leading-relaxed font-cormorant italic font-semibold text-2xl">
+                <h3 className="text-4xl md:text-5xl font-playfair italic font-semibold mb-3">How to browse</h3>
+                <p className="text-[#FCEAAC]/80 mb-6 leading-relaxed font-cormorant italic font-semibold text-2xl md:text-3xl">
                   <strong className="text-[#FCEAAC] block mb-1 font-sans not-italic text-sm uppercase tracking-wider font-bold">Double Tap</strong> 
                   to see how this product looks in your home.
                 </p>
-                <p className="text-[#FCEAAC]/80 mb-8 leading-relaxed font-cormorant italic font-semibold text-2xl">
+                <p className="text-[#FCEAAC]/80 mb-8 leading-relaxed font-cormorant italic font-semibold text-2xl md:text-3xl">
                   <strong className="text-[#FCEAAC] block mb-1 font-sans not-italic text-sm uppercase tracking-wider font-bold">Swipe Left & Right</strong> 
                   to cycle through the collection.
                 </p>
-                <button className="bg-[#FCEAAC] text-[#4A0404] px-8 py-2.5 rounded-full font-bold text-sm font-sans uppercase tracking-wide">Got it</button>
+                <button className="bg-[#FCEAAC] text-[#4A0404] px-8 py-2.5 rounded-full font-bold text-sm md:text-base font-sans uppercase tracking-wide">Got it</button>
              </motion.div>
           </motion.div>
         )}
