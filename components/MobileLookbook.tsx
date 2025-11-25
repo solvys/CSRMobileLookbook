@@ -314,14 +314,14 @@ const LazyImage = ({ src, alt, className }: { src: string; alt: string; classNam
 };
 
 // --- Details Modal Component ---
-const DetailsModal = ({ 
-  product, 
-  onClose, 
-  onBook 
-}: { 
-  product: Product; 
-  onClose: () => void; 
-  onBook: () => void 
+const DetailsModal = ({
+  product,
+  onClose,
+  onBook
+}: {
+  product: Product;
+  onClose: () => void;
+  onBook: () => void
 }) => {
   return (
     <motion.div
@@ -355,7 +355,7 @@ const DetailsModal = ({
           <p className="text-xl md:text-2xl font-cormorant italic font-semibold text-[#4A0404] leading-relaxed mb-6">
             {product.longDescription || product.shortDescription}
           </p>
-          
+
           <h3 className="text-sm font-bold font-sans uppercase tracking-wider text-[#4A0404] mb-3">Key Features</h3>
           <ul className="space-y-2 mb-8">
             {product.features.map((feature, idx) => (
@@ -369,12 +369,12 @@ const DetailsModal = ({
 
         {/* Footer CTA */}
         <div className="p-6 border-t border-[#4A0404]/10 bg-[#FCEAAC] pb-10">
-           <button 
-             onClick={onBook}
-             className="w-full bg-[#4A0404] text-[#FCEAAC] font-bold py-4 rounded-full shadow-lg uppercase tracking-widest text-sm hover:bg-[#360303] transition-colors font-sans"
-           >
-             Book Consultation
-           </button>
+          <button
+            onClick={onBook}
+            className="w-full bg-[#4A0404] text-[#FCEAAC] font-bold py-4 rounded-full shadow-lg uppercase tracking-widest text-sm hover:bg-[#360303] transition-colors font-sans"
+          >
+            Book Consultation
+          </button>
         </div>
       </motion.div>
     </motion.div>
@@ -404,7 +404,7 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
 
   // Filter products based on category
   const filteredProducts = useMemo(() => {
-    return selectedCategoryId 
+    return selectedCategoryId
       ? products.filter(p => p.categoryId === selectedCategoryId)
       : [];
   }, [selectedCategoryId, products]);
@@ -416,7 +416,7 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
     setViewState('PRODUCT_SWIPE');
     // Show tutorial only if it's NOT the factory category (assuming factory is just a video)
     if (catId !== 'cat_factory') {
-        setShowTutorial(true);
+      setShowTutorial(true);
     }
   };
 
@@ -430,13 +430,13 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
     let target = newIndex;
     if (target < 0) target = filteredProducts.length - 1;
     if (target >= filteredProducts.length) target = 0;
-    
+
     setActiveIndex(target);
     onCardChange?.(filteredProducts[target], target);
   };
 
   // Swipe Logic
-  const onDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+  const onDragEnd = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     const threshold = 50;
     if (info.offset.x < -threshold) {
       changeIndex(activeIndex + 1);
@@ -462,11 +462,11 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
 
   return (
     <div className="relative w-full h-[100dvh] bg-[#FCEAAC] overflow-hidden shadow-2xl flex flex-col">
-      
+
       {/* --- CATEGORY SELECTION VIEW --- */}
       <AnimatePresence mode="wait">
         {viewState === 'CATEGORY_SELECT' && (
-          <motion.div 
+          <motion.div
             key="categories"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -500,13 +500,13 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
 
             {/* --- FOOTER LOGO LINK --- */}
             <footer className="mt-12 pb-8 flex justify-center w-full">
-                <a href="https://www.californiashutters.com" target="_blank" rel="noopener noreferrer" className="opacity-80 hover:opacity-100 transition-opacity">
-                    <img 
-                        src="https://framerusercontent.com/images/ZPV33DOx8vGwYSUrjTMF6nwKaxg.png?scale-down-to=512&width=1536&height=1024" 
-                        alt="California Shutters" 
-                        className="h-64 w-auto object-contain" 
-                    />
-                </a>
+              <a href="https://www.californiashutters.com" target="_blank" rel="noopener noreferrer" className="opacity-80 hover:opacity-100 transition-opacity">
+                <img
+                  src="https://framerusercontent.com/images/ZPV33DOx8vGwYSUrjTMF6nwKaxg.png?scale-down-to=512&width=1536&height=1024"
+                  alt="California Shutters"
+                  className="h-64 w-auto object-contain"
+                />
+              </a>
             </footer>
 
           </motion.div>
@@ -522,40 +522,40 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
             transition={{ duration: ANIMATION_DURATION }}
             className="flex-1 flex flex-col relative bg-[#FCEAAC] h-full"
           >
-             {/* Header Navigation */}
-             <div className="absolute top-0 left-0 w-full z-20 p-4 md:p-8 flex items-center justify-between bg-gradient-to-b from-[#4A0404]/40 to-transparent pointer-events-none">
-                <div className="pointer-events-auto">
-                    <button 
-                    onClick={handleBackToCategories}
-                    className="text-[#FCEAAC] flex items-center gap-1 text-sm md:text-base font-medium backdrop-blur-md bg-[#4A0404]/20 px-3 py-1.5 md:px-5 md:py-2.5 rounded-full hover:bg-[#4A0404]/40 transition-colors font-sans"
-                    >
-                    <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
-                    Back
-                    </button>
-                </div>
-                
-                {/* Pagination Dots */}
-                <div className="flex gap-1 md:gap-2">
-                  {filteredProducts.map((_, i) => (
-                    <div 
-                      key={i} 
-                      className={`h-1 rounded-full transition-all duration-300 ${i === activeIndex ? 'w-4 md:w-6 bg-[#FCEAAC]' : 'w-1 md:w-2 bg-[#FCEAAC]/50'}`} 
-                    />
-                  ))}
-                </div>
-             </div>
+            {/* Header Navigation */}
+            <div className="absolute top-0 left-0 w-full z-20 p-4 md:p-8 flex items-center justify-between bg-gradient-to-b from-[#4A0404]/40 to-transparent pointer-events-none">
+              <div className="pointer-events-auto">
+                <button
+                  onClick={handleBackToCategories}
+                  className="text-[#FCEAAC] flex items-center gap-1 text-sm md:text-base font-medium backdrop-blur-md bg-[#4A0404]/20 px-3 py-1.5 md:px-5 md:py-2.5 rounded-full hover:bg-[#4A0404]/40 transition-colors font-sans"
+                >
+                  <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
+                  Back
+                </button>
+              </div>
 
-             {/* Top Banner Text Box */}
-             <div className="absolute top-16 md:top-24 left-0 w-full z-20 px-6 pointer-events-none flex justify-center">
-                <div className="bg-[#FCEAAC]/80 backdrop-blur-md border border-[#4A0404]/20 rounded-xl p-3 md:p-4 text-center shadow-lg pointer-events-auto max-w-lg">
-                  <p className="text-[#4A0404] text-xs md:text-sm font-sans font-bold tracking-wide leading-relaxed mb-1">
-                    We bring the showroom to you.<br/>Pick the products you like & we'll see you soon!
-                  </p>
-                  <a href="tel:3058279333" className="text-[#4A0404] text-xs md:text-sm font-sans font-bold tracking-wide border-b border-[#4A0404]/50 hover:border-[#4A0404] transition-colors pb-0.5">
-                    Questions? Call (305) 827-9333
-                  </a>
-                </div>
-             </div>
+              {/* Pagination Dots */}
+              <div className="flex gap-1 md:gap-2">
+                {filteredProducts.map((_, i) => (
+                  <div
+                    key={i}
+                    className={`h-1 rounded-full transition-all duration-300 ${i === activeIndex ? 'w-4 md:w-6 bg-[#FCEAAC]' : 'w-1 md:w-2 bg-[#FCEAAC]/50'}`}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Top Banner Text Box */}
+            <div className="absolute top-16 md:top-24 left-0 w-full z-20 px-6 pointer-events-none flex justify-center">
+              <div className="bg-[#FCEAAC]/80 backdrop-blur-md border border-[#4A0404]/20 rounded-xl p-3 md:p-4 text-center shadow-lg pointer-events-auto max-w-lg">
+                <p className="text-[#4A0404] text-xs md:text-sm font-sans font-bold tracking-wide leading-relaxed mb-1">
+                  We bring the showroom to you.<br />Pick the products you like & we'll see you soon!
+                </p>
+                <a href="tel:3058279333" className="text-[#4A0404] text-xs md:text-sm font-sans font-bold tracking-wide border-b border-[#4A0404]/50 hover:border-[#4A0404] transition-colors pb-0.5">
+                  Questions? Call (305) 827-9333
+                </a>
+              </div>
+            </div>
 
             {/* Draggable Card Area */}
             <div className="flex-1 relative overflow-hidden">
@@ -570,41 +570,41 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
               >
                 {/* Product Image */}
                 <div className="h-full w-full relative">
-                    <LazyImage src={currentProduct.imageUrl} alt={currentProduct.name} className="h-full w-full object-cover" />
-                    {/* Gradient overlay for text readability */}
-                    <div className="absolute bottom-0 left-0 w-full h-2/3 bg-gradient-to-t from-[#4A0404]/90 via-[#4A0404]/40 to-transparent pointer-events-none" />
+                  <LazyImage src={currentProduct.imageUrl} alt={currentProduct.name} className="h-full w-full object-cover" />
+                  {/* Gradient overlay for text readability */}
+                  <div className="absolute bottom-0 left-0 w-full h-2/3 bg-gradient-to-t from-[#4A0404]/90 via-[#4A0404]/40 to-transparent pointer-events-none" />
                 </div>
 
                 {/* Content Overlay (Tinder Style) */}
                 <div className="absolute bottom-0 left-0 w-full p-6 pb-24 md:p-12 md:pb-32 pointer-events-none">
-                   <motion.div 
-                      initial={{ y: 20, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      className="text-[#FCEAAC] max-w-[90%] md:max-w-4xl"
-                   >
-                      <div className="flex items-center justify-between mb-2">
-                        {currentProduct.collection && (
-                           <span className="text-xs md:text-sm text-[#FCEAAC]/80 font-sans uppercase tracking-widest mb-1 block">
-                              {currentProduct.collection}
-                           </span>
-                        )}
-                      </div>
-                      <h2 className="text-5xl md:text-7xl font-playfair italic font-semibold leading-tight mb-2 shadow-[#4A0404] drop-shadow-lg">
-                        {currentProduct.name}
-                      </h2>
-                      <p className="text-[#FCEAAC]/90 text-2xl md:text-4xl font-cormorant italic font-semibold leading-tight max-w-[90%] mb-4">
-                        {currentProduct.shortDescription}
-                      </p>
-                      
-                      {/* Features Pills */}
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {currentProduct.features.slice(0,3).map((feat, i) => (
-                          <span key={i} className="text-xs md:text-sm bg-[#4A0404]/40 backdrop-blur-md text-[#FCEAAC] px-2.5 py-1 rounded-md border border-[#FCEAAC]/10 font-sans tracking-wide">
-                            {feat}
-                          </span>
-                        ))}
-                      </div>
-                   </motion.div>
+                  <motion.div
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    className="text-[#FCEAAC] max-w-[90%] md:max-w-4xl"
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      {currentProduct.collection && (
+                        <span className="text-xs md:text-sm text-[#FCEAAC]/80 font-sans uppercase tracking-widest mb-1 block">
+                          {currentProduct.collection}
+                        </span>
+                      )}
+                    </div>
+                    <h2 className="text-5xl md:text-7xl font-playfair italic font-semibold leading-tight mb-2 shadow-[#4A0404] drop-shadow-lg">
+                      {currentProduct.name}
+                    </h2>
+                    <p className="text-[#FCEAAC]/90 text-2xl md:text-4xl font-cormorant italic font-semibold leading-tight max-w-[90%] mb-4">
+                      {currentProduct.shortDescription}
+                    </p>
+
+                    {/* Features Pills */}
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {currentProduct.features.slice(0, 3).map((feat, i) => (
+                        <span key={i} className="text-xs md:text-sm bg-[#4A0404]/40 backdrop-blur-md text-[#FCEAAC] px-2.5 py-1 rounded-md border border-[#FCEAAC]/10 font-sans tracking-wide">
+                          {feat}
+                        </span>
+                      ))}
+                    </div>
+                  </motion.div>
                 </div>
 
                 {/* Hidden Next Image Preloader */}
@@ -612,49 +612,49 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
                   <img src={nextProduct.imageUrl} alt="preload" className="hidden" />
                 )}
               </motion.div>
-              
+
               {/* DESKTOP/TABLET NAVIGATION ARROWS */}
               {/* Previous Button - Hidden on mobile, visible on medium+ screens */}
-              <button 
+              <button
                 onClick={(e) => { e.stopPropagation(); changeIndex(activeIndex - 1); }}
                 className="hidden md:flex absolute left-6 top-1/2 -translate-y-1/2 z-30 w-16 h-16 rounded-full bg-[#4A0404]/20 backdrop-blur-md border border-[#FCEAAC]/20 text-[#FCEAAC] items-center justify-center hover:bg-[#4A0404]/40 transition-all shadow-lg active:scale-95"
                 aria-label="Previous Product"
               >
-                 <ChevronLeft className="w-8 h-8" />
+                <ChevronLeft className="w-8 h-8" />
               </button>
 
               {/* Next Button - Hidden on mobile, visible on medium+ screens */}
-              <button 
+              <button
                 onClick={(e) => { e.stopPropagation(); changeIndex(activeIndex + 1); }}
                 className="hidden md:flex absolute right-6 top-1/2 -translate-y-1/2 z-30 w-16 h-16 rounded-full bg-[#4A0404]/20 backdrop-blur-md border border-[#FCEAAC]/20 text-[#FCEAAC] items-center justify-center hover:bg-[#4A0404]/40 transition-all shadow-lg active:scale-95"
                 aria-label="Next Product"
               >
-                 <ChevronRight className="w-8 h-8" />
+                <ChevronRight className="w-8 h-8" />
               </button>
 
             </div>
-            
+
             {/* Bottom Actions */}
             <div className="absolute bottom-0 w-full p-6 md:p-10 bg-gradient-to-t from-[#4A0404] to-transparent z-30 pt-12 flex justify-center md:justify-start">
-                 <div className="flex gap-3 w-full md:w-auto md:min-w-[400px]">
-                    <button 
-                      onClick={() => onPrimaryCtaClick?.(currentProduct, activeIndex)}
-                      className="flex-1 bg-[#FCEAAC] text-[#4A0404] font-bold py-3.5 px-6 rounded-full shadow-lg active:scale-[0.98] transition-transform text-sm md:text-base font-sans tracking-wide uppercase"
-                    >
-                      {currentProduct.primaryCtaLabel}
-                    </button>
-                    {currentProduct.secondaryCtaLabel && (
-                      <button
-                        onClick={() => {
-                          onSecondaryCtaClick?.(currentProduct, activeIndex);
-                          setShowDetails(true);
-                        }}
-                         className="bg-[#FCEAAC]/20 backdrop-blur-md border border-[#FCEAAC]/30 text-[#FCEAAC] font-bold py-3.5 px-6 rounded-full active:bg-[#FCEAAC]/30 transition-colors text-sm md:text-base font-sans tracking-wide uppercase"
-                      >
-                        {currentProduct.secondaryCtaLabel}
-                      </button>
-                    )}
-                 </div>
+              <div className="flex gap-3 w-full md:w-auto md:min-w-[400px]">
+                <button
+                  onClick={() => onPrimaryCtaClick?.(currentProduct, activeIndex)}
+                  className="flex-1 bg-[#FCEAAC] text-[#4A0404] font-bold py-3.5 px-6 rounded-full shadow-lg active:scale-[0.98] transition-transform text-sm md:text-base font-sans tracking-wide uppercase"
+                >
+                  {currentProduct.primaryCtaLabel}
+                </button>
+                {currentProduct.secondaryCtaLabel && (
+                  <button
+                    onClick={() => {
+                      onSecondaryCtaClick?.(currentProduct, activeIndex);
+                      setShowDetails(true);
+                    }}
+                    className="bg-[#FCEAAC]/20 backdrop-blur-md border border-[#FCEAAC]/30 text-[#FCEAAC] font-bold py-3.5 px-6 rounded-full active:bg-[#FCEAAC]/30 transition-colors text-sm md:text-base font-sans tracking-wide uppercase"
+                  >
+                    {currentProduct.secondaryCtaLabel}
+                  </button>
+                )}
+              </div>
             </div>
 
             {/* Phone Link Button */}
@@ -686,33 +686,33 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
       {/* --- TUTORIAL OVERLAY --- */}
       <AnimatePresence>
         {showTutorial && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setShowTutorial(false)}
             className="absolute inset-0 z-50 bg-[#4A0404]/90 backdrop-blur-sm flex flex-col items-center justify-center text-center p-8 cursor-pointer"
           >
-             <motion.div 
-               initial={{ scale: 0.9, opacity: 0 }}
-               animate={{ scale: 1, opacity: 1 }}
-               transition={{ delay: 0.1 }}
-               className="text-[#FCEAAC] max-w-md"
-             >
-                <div className="w-16 h-16 md:w-20 md:h-20 bg-[#FCEAAC]/10 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
-                   <DoubleTapIcon className="w-8 h-8 md:w-10 md:h-10 text-[#FCEAAC]" />
-                </div>
-                <h3 className="text-4xl md:text-5xl font-playfair italic font-semibold mb-3">How to browse</h3>
-                <p className="text-[#FCEAAC]/80 mb-6 leading-relaxed font-cormorant italic font-semibold text-2xl md:text-3xl">
-                  <strong className="text-[#FCEAAC] block mb-1 font-sans not-italic text-sm uppercase tracking-wider font-bold">Double Tap</strong> 
-                  to see how this product looks in your home.
-                </p>
-                <p className="text-[#FCEAAC]/80 mb-8 leading-relaxed font-cormorant italic font-semibold text-2xl md:text-3xl">
-                  <strong className="text-[#FCEAAC] block mb-1 font-sans not-italic text-sm uppercase tracking-wider font-bold">Swipe Left & Right</strong> 
-                  to cycle through the collection.
-                </p>
-                <button className="bg-[#FCEAAC] text-[#4A0404] px-8 py-2.5 rounded-full font-bold text-sm md:text-base font-sans uppercase tracking-wide">Got it</button>
-             </motion.div>
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.1 }}
+              className="text-[#FCEAAC] max-w-md"
+            >
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-[#FCEAAC]/10 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
+                <DoubleTapIcon className="w-8 h-8 md:w-10 md:h-10 text-[#FCEAAC]" />
+              </div>
+              <h3 className="text-4xl md:text-5xl font-playfair italic font-semibold mb-3">How to browse</h3>
+              <p className="text-[#FCEAAC]/80 mb-6 leading-relaxed font-cormorant italic font-semibold text-2xl md:text-3xl">
+                <strong className="text-[#FCEAAC] block mb-1 font-sans not-italic text-sm uppercase tracking-wider font-bold">Double Tap</strong>
+                to see how this product looks in your home.
+              </p>
+              <p className="text-[#FCEAAC]/80 mb-8 leading-relaxed font-cormorant italic font-semibold text-2xl md:text-3xl">
+                <strong className="text-[#FCEAAC] block mb-1 font-sans not-italic text-sm uppercase tracking-wider font-bold">Swipe Left & Right</strong>
+                to cycle through the collection.
+              </p>
+              <button className="bg-[#FCEAAC] text-[#4A0404] px-8 py-2.5 rounded-full font-bold text-sm md:text-base font-sans uppercase tracking-wide">Got it</button>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -720,7 +720,7 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
       {/* --- DETAILS POPUP --- */}
       <AnimatePresence>
         {showDetails && currentProduct && (
-          <DetailsModal 
+          <DetailsModal
             product={currentProduct}
             onClose={() => setShowDetails(false)}
             onBook={() => {
