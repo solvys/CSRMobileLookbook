@@ -423,6 +423,9 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
   const handleBackToCategories = () => {
     setViewState('CATEGORY_SELECT');
     setSelectedCategoryId(null);
+    setActiveIndex(0);
+    setShowDetails(false);
+    setShowTutorial(false);
   };
 
   const changeIndex = (newIndex: number) => {
