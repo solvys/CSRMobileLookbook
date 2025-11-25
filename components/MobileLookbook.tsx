@@ -286,12 +286,6 @@ const CloseIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-const HeartIcon = ({ className }: { className?: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
-    <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
-  </svg>
-);
-
 const DoubleTapIcon = ({ className }: { className?: string }) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
     <path d="M9 4.5a.75.75 0 01.75-.75h4.5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0V6.31l-4.72 4.72a.75.75 0 11-1.06-1.06l4.72-4.72H10.5a.75.75 0 01-.75-.75z" />
@@ -407,8 +401,6 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
   const [showTutorial, setShowTutorial] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [lastTap, setLastTap] = useState<number>(0);
-  const [showHeart, setShowHeart] = useState(false);
-  const [heartPosition, setHeartPosition] = useState({ x: 0, y: 0 });
 
   // Filter products based on category
   const filteredProducts = useMemo(() => {
@@ -457,21 +449,10 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
   };
 
   // Double Tap Logic
-  const handleCardTap = (event: any) => {
+  const handleCardTap = () => {
     const now = Date.now();
     const DOUBLE_TAP_DELAY = 300;
     if (now - lastTap < DOUBLE_TAP_DELAY) {
-      // Get tap position
-      const rect = event.currentTarget.getBoundingClientRect();
-      const x = (event.clientX || event.touches?.[0]?.clientX || rect.width / 2) - rect.left;
-      const y = (event.clientY || event.touches?.[0]?.clientY || rect.height / 2) - rect.top;
-
-      setHeartPosition({ x, y });
-      setShowHeart(true);
-
-      // Hide heart after animation
-      setTimeout(() => setShowHeart(false), 1000);
-
       if (filteredProducts[activeIndex]) {
         onPrimaryCtaClick?.(filteredProducts[activeIndex], activeIndex);
       }
@@ -595,33 +576,6 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
                   <LazyImage src={currentProduct.imageUrl} alt={currentProduct.name} className="h-full w-full object-cover" />
                   {/* Gradient overlay for text readability */}
                   <div className="absolute bottom-0 left-0 w-full h-2/3 bg-gradient-to-t from-[#4A0404]/90 via-[#4A0404]/40 to-transparent pointer-events-none" />
-
-                  {/* Instagram-style Heart Animation */}
-                  <AnimatePresence>
-                    {showHeart && (
-                      <motion.div
-                        initial={{ scale: 0, opacity: 0.8 }}
-                        animate={{
-                          scale: [0, 1.2, 1],
-                          opacity: [0.8, 1, 0],
-                          y: [0, -100]
-                        }}
-                        exit={{ opacity: 0 }}
-                        transition={{
-                          duration: 1,
-                          ease: "easeOut"
-                        }}
-                        className="absolute pointer-events-none z-50"
-                        style={{
-                          left: heartPosition.x,
-                          top: heartPosition.y,
-                          transform: 'translate(-50%, -50%)'
-                        }}
-                      >
-                        <HeartIcon className="w-24 h-24 md:w-32 md:h-32 text-white drop-shadow-2xl" />
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
                 </div>
 
                 {/* Content Overlay (Tinder Style) */}
@@ -754,7 +708,7 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
               <h3 className="text-4xl md:text-5xl font-playfair italic font-semibold mb-3">How to browse</h3>
               <p className="text-[#FCEAAC]/80 mb-6 leading-relaxed font-cormorant italic font-semibold text-2xl md:text-3xl">
                 <strong className="text-[#FCEAAC] block mb-1 font-sans not-italic text-sm uppercase tracking-wider font-bold">Double Tap</strong>
-                to see how this product looks in other homes.
+                to see how this product looks in your home.
               </p>
               <p className="text-[#FCEAAC]/80 mb-8 leading-relaxed font-cormorant italic font-semibold text-2xl md:text-3xl">
                 <strong className="text-[#FCEAAC] block mb-1 font-sans not-italic text-sm uppercase tracking-wider font-bold">Swipe Left & Right</strong>
