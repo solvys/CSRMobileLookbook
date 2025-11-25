@@ -436,7 +436,7 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
   };
 
   // Swipe Logic
-  const onDragEnd = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+  const onDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     const threshold = 50;
     if (info.offset.x < -threshold) {
       changeIndex(activeIndex + 1);

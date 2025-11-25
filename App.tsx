@@ -3,19 +3,19 @@ import { MobileLookbook, Product } from './components/MobileLookbook';
 
 const App: React.FC = () => {
   // Analytics / Tracking Handlers
-  const handlePrimaryCtaClick = (product: Product) => {
+  const handlePrimaryCtaClick = (product: Product, _index: number) => {
     console.log(`[Analytics] Conversion: User clicked 'Book Consultation' on "${product.name}"`);
     // Navigate to consultation booking
     window.location.href = 'https://www.californiashutters.com/consultations/';
   };
 
-  const handleSecondaryCtaClick = (product: Product) => {
+  const handleSecondaryCtaClick = (product: Product, _index: number) => {
     console.log(`[Analytics] Interest: User clicked Details on "${product.name}"`);
     // Details are handled internally by the MobileLookbook component popup, 
     // but this callback captures the event for analytics.
   };
 
-  const handleCardChange = (product: Product) => {
+  const handleCardChange = (product: Product, _index: number) => {
     console.log(`[Analytics] Swipe: Viewed "${product.name}"`);
   };
 
