@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 
 // ------------------------------------------------------------------
@@ -65,7 +65,7 @@ export const DEFAULT_CATEGORIES: Category[] = [
   {
     id: 'cat_factory',
     title: 'Factory',
-    image: 'https://framerusercontent.com/images/N0ew03Y7rvyw5FFYNpyEY0T79I.png?width=1024&height=976', // Placeholder using shutter image until video thumb provided
+    image: 'https://framerusercontent.com/images/N0ew03Y7rvyw5FFYNpyEY0T79I.png?width=1024&height=976', 
     description: 'View our production factory.'
   }
 ];
@@ -231,21 +231,6 @@ export const DEFAULT_PRODUCTS: Product[] = [
     primaryCtaLabel: 'Book Consultation',
     secondaryCtaLabel: 'Details',
     relatedProductIds: ['pleated-shades', 'cellular-shades', 'layered-zebra-shades']
-  },
-
-  // --- FACTORY (PLACEHOLDER) ---
-  {
-    id: 'factory-tour',
-    categoryId: 'cat_factory',
-    name: 'Factory Production Tour',
-    collection: 'Behind the Scenes',
-    imageUrl: 'https://framerusercontent.com/images/N0ew03Y7rvyw5FFYNpyEY0T79I.png?width=1024&height=976', // Placeholder
-    shortDescription: 'Witness the craftsmanship and technology behind our custom shutters.',
-    longDescription: 'Take a virtual tour of our state-of-the-art production facility. See how our skilled artisans combine traditional craftsmanship with modern technology to create the world\'s finest window treatments.',
-    features: ['State-of-the-Art', 'Hand-Finished', 'Quality Control'],
-    primaryCtaLabel: 'Book Consultation',
-    secondaryCtaLabel: 'Watch Video',
-    relatedProductIds: []
   }
 ];
 
@@ -259,24 +244,6 @@ type ViewState = 'CATEGORY_SELECT' | 'PRODUCT_SWIPE';
 const ChevronLeft = ({ className }: { className?: string }) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className={className}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-  </svg>
-);
-
-const ChevronRight = ({ className }: { className?: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className={className}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-  </svg>
-);
-
-const GlobeIcon = ({ className }: { className?: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className={className}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
-  </svg>
-);
-
-const PhoneIcon = ({ className }: { className?: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
-    <path fillRule="evenodd" d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 4.5V4.5z" clipRule="evenodd" />
   </svg>
 );
 
@@ -314,14 +281,14 @@ const LazyImage = ({ src, alt, className }: { src: string; alt: string; classNam
 };
 
 // --- Details Modal Component ---
-const DetailsModal = ({
-  product,
-  onClose,
-  onBook
-}: {
-  product: Product;
-  onClose: () => void;
-  onBook: () => void
+const DetailsModal = ({ 
+  product, 
+  onClose, 
+  onBook 
+}: { 
+  product: Product; 
+  onClose: () => void; 
+  onBook: () => void 
 }) => {
   return (
     <motion.div
@@ -355,7 +322,7 @@ const DetailsModal = ({
           <p className="text-xl md:text-2xl font-cormorant italic font-semibold text-[#4A0404] leading-relaxed mb-6">
             {product.longDescription || product.shortDescription}
           </p>
-
+          
           <h3 className="text-sm font-bold font-sans uppercase tracking-wider text-[#4A0404] mb-3">Key Features</h3>
           <ul className="space-y-2 mb-8">
             {product.features.map((feature, idx) => (
@@ -369,12 +336,64 @@ const DetailsModal = ({
 
         {/* Footer CTA */}
         <div className="p-6 border-t border-[#4A0404]/10 bg-[#FCEAAC] pb-10">
-          <button
-            onClick={onBook}
-            className="w-full bg-[#4A0404] text-[#FCEAAC] font-bold py-4 rounded-full shadow-lg uppercase tracking-widest text-sm hover:bg-[#360303] transition-colors font-sans"
-          >
-            Book Consultation
-          </button>
+           <button 
+             onClick={onBook}
+             className="w-full bg-[#4A0404] text-[#FCEAAC] font-bold py-4 rounded-full shadow-lg uppercase tracking-widest text-sm hover:bg-[#360303] transition-colors font-sans"
+           >
+             Book Consultation
+           </button>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
+// --- Redirect Popup Modal ---
+const RedirectModal = ({ 
+  isOpen, 
+  onClose, 
+  onConfirm 
+}: { 
+  isOpen: boolean; 
+  onClose: () => void; 
+  onConfirm: () => void; 
+}) => {
+  if (!isOpen) return null;
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-6"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.9, opacity: 0 }}
+        className="bg-[#FCEAAC] w-full max-w-md rounded-2xl p-8 shadow-2xl border border-[#4A0404]/10 text-center relative"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button onClick={onClose} className="absolute top-4 right-4 text-[#4A0404]/50 hover:text-[#4A0404]">
+            <CloseIcon className="w-5 h-5" />
+        </button>
+        <h3 className="text-2xl font-playfair font-bold text-[#4A0404] mb-4">Leaving App</h3>
+        <p className="font-cormorant text-xl text-[#4A0404]/80 mb-8 leading-relaxed">
+          You are now being redirected to YouTube. Feel free to come back here to shop products or contact us with any questions at (305) 827-9333. Happy Holidays!
+        </p>
+        <div className="flex gap-4 justify-center">
+            <button 
+                onClick={onClose}
+                className="px-6 py-3 rounded-full border border-[#4A0404]/20 text-[#4A0404] font-bold uppercase text-xs tracking-wider hover:bg-[#4A0404]/5 transition-colors font-sans"
+            >
+                Cancel
+            </button>
+            <button 
+                onClick={onConfirm}
+                className="px-6 py-3 rounded-full bg-[#4A0404] text-[#FCEAAC] font-bold uppercase text-xs tracking-wider shadow-lg hover:bg-[#360303] transition-colors font-sans"
+            >
+                Watch Video
+            </button>
         </div>
       </motion.div>
     </motion.div>
@@ -400,32 +419,38 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
   const [activeIndex, setActiveIndex] = useState(0);
   const [showTutorial, setShowTutorial] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
+  const [showRedirectModal, setShowRedirectModal] = useState(false);
   const [lastTap, setLastTap] = useState<number>(0);
 
   // Filter products based on category
   const filteredProducts = useMemo(() => {
-    return selectedCategoryId
+    return selectedCategoryId 
       ? products.filter(p => p.categoryId === selectedCategoryId)
       : [];
   }, [selectedCategoryId, products]);
 
   // Actions
   const handleSelectCategory = (catId: string) => {
+    // Intercept Factory click for redirect modal
+    if (catId === 'cat_factory') {
+        setShowRedirectModal(true);
+        return;
+    }
+
     setSelectedCategoryId(catId);
     setActiveIndex(0);
     setViewState('PRODUCT_SWIPE');
-    // Show tutorial only if it's NOT the factory category (assuming factory is just a video)
-    if (catId !== 'cat_factory') {
-      setShowTutorial(true);
-    }
+    setShowTutorial(true);
   };
 
   const handleBackToCategories = () => {
     setViewState('CATEGORY_SELECT');
     setSelectedCategoryId(null);
-    setActiveIndex(0);
-    setShowDetails(false);
-    setShowTutorial(false);
+  };
+
+  const handleRedirectConfirm = () => {
+    window.open('https://youtube.com/shorts/ZoGGhnZKKnM?si=hlZM5vThXO1wmEWt', '_blank');
+    setShowRedirectModal(false);
   };
 
   const changeIndex = (newIndex: number) => {
@@ -433,13 +458,13 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
     let target = newIndex;
     if (target < 0) target = filteredProducts.length - 1;
     if (target >= filteredProducts.length) target = 0;
-
+    
     setActiveIndex(target);
     onCardChange?.(filteredProducts[target], target);
   };
 
   // Swipe Logic
-  const onDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+  const onDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     const threshold = 50;
     if (info.offset.x < -threshold) {
       changeIndex(activeIndex + 1);
@@ -461,15 +486,22 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
   };
 
   const currentProduct = filteredProducts[activeIndex];
-  const nextProduct = filteredProducts[(activeIndex + 1) % filteredProducts.length];
+
+  // Auto-hide tutorial after 3s
+  useEffect(() => {
+    if (showTutorial) {
+      const timer = setTimeout(() => setShowTutorial(false), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showTutorial]);
 
   return (
     <div className="relative w-full h-[100dvh] bg-[#FCEAAC] overflow-hidden shadow-2xl flex flex-col">
-
+      
       {/* --- CATEGORY SELECTION VIEW --- */}
       <AnimatePresence mode="wait">
         {viewState === 'CATEGORY_SELECT' && (
-          <motion.div
+          <motion.div 
             key="categories"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -488,7 +520,7 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
                 <motion.button
                   key={cat.id}
                   onClick={() => handleSelectCategory(cat.id)}
-                  className="group relative h-40 md:h-96 w-full rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow text-left"
+                  className={`group relative h-40 md:h-96 w-full rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow text-left ${cat.id === 'cat_factory' ? 'lg:hidden' : ''}`}
                   whileTap={{ scale: 0.98 }}
                 >
                   <LazyImage src={cat.image} alt={cat.title} className="absolute inset-0 w-full h-full object-cover" />
@@ -503,234 +535,170 @@ export const MobileLookbook: React.FC<MobileLookbookProps> = ({
 
             {/* --- FOOTER LOGO LINK --- */}
             <footer className="mt-12 pb-8 flex justify-center w-full">
-              <a href="https://www.californiashutters.com" target="_blank" rel="noopener noreferrer" className="opacity-80 hover:opacity-100 transition-opacity">
-                <img
-                  src="https://framerusercontent.com/images/ZPV33DOx8vGwYSUrjTMF6nwKaxg.png?scale-down-to=512&width=1536&height=1024"
-                  alt="California Shutters"
-                  className="h-64 w-auto object-contain"
-                />
-              </a>
+                <a href="https://www.californiashutters.com" target="_blank" rel="noopener noreferrer" className="opacity-80 hover:opacity-100 transition-opacity">
+                    <img 
+                        src="https://framerusercontent.com/images/ZPV33DOx8vGwYSUrjTMF6nwKaxg.png?scale-down-to=512&width=1536&height=1024" 
+                        alt="California Shutters" 
+                        className="h-64 w-auto object-contain" 
+                    />
+                </a>
             </footer>
 
           </motion.div>
         )}
+      </AnimatePresence>
 
-        {/* --- PRODUCT SWIPE VIEW --- */}
+      {/* --- PRODUCT SWIPE VIEW --- */}
+      <AnimatePresence mode="wait">
         {viewState === 'PRODUCT_SWIPE' && currentProduct && (
           <motion.div
-            key="products"
+            key="products-view"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 50 }}
             transition={{ duration: ANIMATION_DURATION }}
             className="flex-1 flex flex-col relative bg-[#FCEAAC] h-full"
           >
-            {/* Header Navigation */}
-            <div className="absolute top-0 left-0 w-full z-20 p-4 md:p-8 flex items-center justify-between bg-gradient-to-b from-[#4A0404]/40 to-transparent pointer-events-none">
-              <div className="pointer-events-auto">
-                <button
-                  onClick={handleBackToCategories}
-                  className="text-[#FCEAAC] flex items-center gap-1 text-sm md:text-base font-medium backdrop-blur-md bg-[#4A0404]/20 px-3 py-1.5 md:px-5 md:py-2.5 rounded-full hover:bg-[#4A0404]/40 transition-colors font-sans"
-                >
-                  <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
-                  Back
-                </button>
-              </div>
-
-              {/* Pagination Dots */}
-              <div className="flex gap-1 md:gap-2">
-                {filteredProducts.map((_, i) => (
-                  <div
-                    key={i}
-                    className={`h-1 rounded-full transition-all duration-300 ${i === activeIndex ? 'w-4 md:w-6 bg-[#FCEAAC]' : 'w-1 md:w-2 bg-[#FCEAAC]/50'}`}
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* Top Banner Text Box */}
-            <div className="absolute top-16 md:top-24 left-0 w-full z-20 px-6 pointer-events-none flex justify-center">
-              <div className="bg-[#FCEAAC]/80 backdrop-blur-md border border-[#4A0404]/20 rounded-xl p-3 md:p-4 text-center shadow-lg pointer-events-auto max-w-lg">
-                <p className="text-[#4A0404] text-xs md:text-sm font-sans font-bold tracking-wide leading-relaxed mb-1">
-                  We bring the showroom to you.<br />Pick the products you like & we'll see you soon!
-                </p>
-                <a href="tel:3058279333" className="text-[#4A0404] text-xs md:text-sm font-sans font-bold tracking-wide border-b border-[#4A0404]/50 hover:border-[#4A0404] transition-colors pb-0.5">
-                  Questions? Call (305) 827-9333
-                </a>
-              </div>
-            </div>
-
-            {/* Draggable Card Area */}
-            <div className="flex-1 relative overflow-hidden">
-              <motion.div
-                key={currentProduct.id}
-                className="h-full w-full relative cursor-grab active:cursor-grabbing"
-                drag="x"
-                dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.2}
-                onDragEnd={onDragEnd}
-                onTap={handleCardTap}
-              >
-                {/* Product Image */}
-                <div className="h-full w-full relative">
-                  <LazyImage src={currentProduct.imageUrl} alt={currentProduct.name} className="h-full w-full object-cover" />
-                  {/* Gradient overlay for text readability */}
-                  <div className="absolute bottom-0 left-0 w-full h-2/3 bg-gradient-to-t from-[#4A0404]/90 via-[#4A0404]/40 to-transparent pointer-events-none" />
+             {/* Header Navigation */}
+             <div className="absolute top-0 left-0 w-full z-20 p-4 md:p-8 flex items-center justify-between bg-gradient-to-b from-[#4A0404]/40 to-transparent pointer-events-none">
+                <div className="pointer-events-auto">
+                    <button 
+                    onClick={handleBackToCategories}
+                    className="text-[#FCEAAC] flex items-center gap-1 text-sm md:text-base font-medium backdrop-blur-md bg-[#4A0404]/20 px-3 py-1.5 md:px-5 md:py-2.5 rounded-full hover:bg-[#4A0404]/40 transition-colors font-sans"
+                    >
+                    <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
+                    Back
+                    </button>
                 </div>
-
-                {/* Content Overlay (Tinder Style) */}
-                <div className="absolute bottom-0 left-0 w-full p-6 pb-24 md:p-12 md:pb-32 pointer-events-none">
-                  <motion.div
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    className="text-[#FCEAAC] max-w-[90%] md:max-w-4xl"
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      {currentProduct.collection && (
-                        <span className="text-xs md:text-sm text-[#FCEAAC]/80 font-sans uppercase tracking-widest mb-1 block">
-                          {currentProduct.collection}
-                        </span>
-                      )}
-                    </div>
-                    <h2 className="text-5xl md:text-7xl font-playfair italic font-semibold leading-tight mb-2 shadow-[#4A0404] drop-shadow-lg">
-                      {currentProduct.name}
-                    </h2>
-                    <p className="text-[#FCEAAC]/90 text-2xl md:text-4xl font-cormorant italic font-semibold leading-tight max-w-[90%] mb-4">
-                      {currentProduct.shortDescription}
-                    </p>
-
-                    {/* Features Pills */}
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {currentProduct.features.slice(0, 3).map((feat, i) => (
-                        <span key={i} className="text-xs md:text-sm bg-[#4A0404]/40 backdrop-blur-md text-[#FCEAAC] px-2.5 py-1 rounded-md border border-[#FCEAAC]/10 font-sans tracking-wide">
-                          {feat}
-                        </span>
-                      ))}
-                    </div>
-                  </motion.div>
+                
+                {/* Pagination Dots */}
+                <div className="flex gap-1 md:gap-2">
+                  {filteredProducts.map((_, i) => (
+                    <div 
+                      key={i} 
+                      className={`h-1 rounded-full transition-all duration-300 ${i === activeIndex ? 'w-4 md:w-6 bg-[#FCEAAC]' : 'w-1.5 md:w-2 bg-[#FCEAAC]/40'}`} 
+                    />
+                  ))}
                 </div>
+             </div>
 
-                {/* Hidden Next Image Preloader */}
-                {nextProduct && (
-                  <img src={nextProduct.imageUrl} alt="preload" className="hidden" />
-                )}
-              </motion.div>
+             {/* Main Card */}
+             <div className="flex-1 relative w-full h-full">
+                <AnimatePresence initial={false} custom={activeIndex} mode="popLayout">
+                    <motion.div
+                        key={currentProduct.id}
+                        custom={activeIndex}
+                        variants={{
+                            enter: (direction: number) => ({ x: direction > 0 ? '100%' : '-100%', opacity: 1 }),
+                            center: { x: 0, opacity: 1 },
+                            exit: (direction: number) => ({ x: direction < 0 ? '100%' : '-100%', opacity: 1 })
+                        }}
+                        initial="enter"
+                        animate="center"
+                        exit="exit"
+                        transition={{ x: { type: "spring", stiffness: 300, damping: 30 } }}
+                        drag="x"
+                        dragConstraints={{ left: 0, right: 0 }}
+                        dragElastic={1}
+                        onDragEnd={onDragEnd}
+                        onClick={handleCardTap}
+                        className="absolute inset-0 w-full h-full bg-[#000]"
+                    >
+                        <LazyImage 
+                          src={currentProduct.imageUrl} 
+                          alt={currentProduct.name} 
+                          className="absolute inset-0 w-full h-full object-cover" 
+                        />
 
-              {/* DESKTOP/TABLET NAVIGATION ARROWS */}
-              {/* Previous Button - Hidden on mobile, visible on medium+ screens */}
-              <button
-                onClick={(e) => { e.stopPropagation(); changeIndex(activeIndex - 1); }}
-                className="hidden md:flex absolute left-6 top-1/2 -translate-y-1/2 z-30 w-16 h-16 rounded-full bg-[#4A0404]/20 backdrop-blur-md border border-[#FCEAAC]/20 text-[#FCEAAC] items-center justify-center hover:bg-[#4A0404]/40 transition-all shadow-lg active:scale-95"
-                aria-label="Previous Product"
-              >
-                <ChevronLeft className="w-8 h-8" />
-              </button>
-
-              {/* Next Button - Hidden on mobile, visible on medium+ screens */}
-              <button
-                onClick={(e) => { e.stopPropagation(); changeIndex(activeIndex + 1); }}
-                className="hidden md:flex absolute right-6 top-1/2 -translate-y-1/2 z-30 w-16 h-16 rounded-full bg-[#4A0404]/20 backdrop-blur-md border border-[#FCEAAC]/20 text-[#FCEAAC] items-center justify-center hover:bg-[#4A0404]/40 transition-all shadow-lg active:scale-95"
-                aria-label="Next Product"
-              >
-                <ChevronRight className="w-8 h-8" />
-              </button>
-
-            </div>
-
-            {/* Bottom Actions */}
-            <div className="absolute bottom-0 w-full p-6 md:p-10 bg-gradient-to-t from-[#4A0404] to-transparent z-30 pt-12 flex justify-center md:justify-start">
-              <div className="flex gap-3 w-full md:w-auto md:min-w-[400px]">
-                <button
-                  onClick={() => onPrimaryCtaClick?.(currentProduct, activeIndex)}
-                  className="flex-1 bg-[#FCEAAC] text-[#4A0404] font-bold py-3.5 px-6 rounded-full shadow-lg active:scale-[0.98] transition-transform text-sm md:text-base font-sans tracking-wide uppercase"
-                >
-                  {currentProduct.primaryCtaLabel}
-                </button>
-                {currentProduct.secondaryCtaLabel && (
-                  <button
-                    onClick={() => {
-                      onSecondaryCtaClick?.(currentProduct, activeIndex);
-                      setShowDetails(true);
-                    }}
-                    className="bg-[#FCEAAC]/20 backdrop-blur-md border border-[#FCEAAC]/30 text-[#FCEAAC] font-bold py-3.5 px-6 rounded-full active:bg-[#FCEAAC]/30 transition-colors text-sm md:text-base font-sans tracking-wide uppercase"
-                  >
-                    {currentProduct.secondaryCtaLabel}
-                  </button>
-                )}
-              </div>
-            </div>
-
-            {/* Phone Link Button */}
-            <motion.a
-              href="tel:3058279333"
-              whileTap={{ scale: 0.9 }}
-              className="absolute bottom-52 right-6 md:bottom-32 md:right-12 z-30 w-12 h-12 md:w-16 md:h-16 bg-[#FCEAAC]/10 backdrop-blur-md border border-[#FCEAAC]/30 text-[#FCEAAC] rounded-full shadow-2xl flex items-center justify-center hover:bg-[#FCEAAC]/20 transition-colors"
-              aria-label="Call Us"
-            >
-              <PhoneIcon className="w-5 h-5 md:w-7 md:h-7" />
-            </motion.a>
-
-            {/* Globe Link Button */}
-            <motion.a
-              href="https://www.californiashutters.com/shop/all-collections/flagship-collections/all-products/"
-              target="_blank"
-              rel="noopener noreferrer"
-              whileTap={{ scale: 0.9 }}
-              className="absolute bottom-36 right-6 md:bottom-12 md:right-12 z-30 w-12 h-12 md:w-16 md:h-16 bg-[#FCEAAC]/10 backdrop-blur-md border border-[#FCEAAC]/30 text-[#FCEAAC] rounded-full shadow-2xl flex items-center justify-center hover:bg-[#FCEAAC]/20 transition-colors"
-              aria-label="Visit Shop"
-            >
-              <GlobeIcon className="w-6 h-6 md:w-8 md:h-8" />
-            </motion.a>
+                        {/* Overlays */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#4A0404]/95 via-[#4A0404]/10 to-transparent pointer-events-none" />
+                        
+                        <div className="absolute bottom-0 left-0 w-full p-6 md:p-12 pb-10 md:pb-16 text-[#FCEAAC] z-20 pointer-events-none">
+                            <div className="pointer-events-auto">
+                                <motion.div 
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.2 }}
+                                >
+                                    <p className="text-xs font-bold tracking-[0.2em] uppercase mb-2 opacity-80 font-sans">{currentProduct.collection}</p>
+                                    <h2 className="text-4xl md:text-5xl font-playfair italic font-semibold mb-3">{currentProduct.name}</h2>
+                                    <p className="text-lg md:text-xl opacity-90 font-cormorant leading-snug max-w-xl mb-6">{currentProduct.shortDescription}</p>
+                                    
+                                    <div className="flex gap-4">
+                                        <button 
+                                            onClick={(e) => { e.stopPropagation(); onPrimaryCtaClick?.(currentProduct, activeIndex); }}
+                                            className="bg-[#FCEAAC] text-[#4A0404] px-6 py-3 md:px-8 md:py-4 rounded-full font-bold uppercase tracking-wider text-xs md:text-sm shadow-lg hover:bg-[#F3E5A0] transition-colors font-sans"
+                                        >
+                                            {currentProduct.primaryCtaLabel}
+                                        </button>
+                                        <button 
+                                            onClick={(e) => { 
+                                              e.stopPropagation(); 
+                                              if (currentProduct.secondaryCtaHref) {
+                                                window.location.href = currentProduct.secondaryCtaHref;
+                                              } else {
+                                                setShowDetails(true); 
+                                              }
+                                              onSecondaryCtaClick?.(currentProduct, activeIndex); 
+                                            }}
+                                            className="bg-transparent border border-[#FCEAAC]/40 text-[#FCEAAC] px-6 py-3 md:px-8 md:py-4 rounded-full font-bold uppercase tracking-wider text-xs md:text-sm hover:bg-[#FCEAAC]/10 transition-colors backdrop-blur-sm font-sans"
+                                        >
+                                            {currentProduct.secondaryCtaLabel}
+                                        </button>
+                                    </div>
+                                </motion.div>
+                            </div>
+                        </div>
+                    </motion.div>
+                </AnimatePresence>
+             </div>
 
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* --- TUTORIAL OVERLAY --- */}
+      {/* --- MODALS & OVERLAYS --- */}
+
+      {/* Redirect Modal */}
       <AnimatePresence>
-        {showTutorial && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setShowTutorial(false)}
-            className="absolute inset-0 z-50 bg-[#4A0404]/90 backdrop-blur-sm flex flex-col items-center justify-center text-center p-8 cursor-pointer"
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.1 }}
-              className="text-[#FCEAAC] max-w-md"
-            >
-              <div className="w-16 h-16 md:w-20 md:h-20 bg-[#FCEAAC]/10 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
-                <DoubleTapIcon className="w-8 h-8 md:w-10 md:h-10 text-[#FCEAAC]" />
-              </div>
-              <h3 className="text-4xl md:text-5xl font-playfair italic font-semibold mb-3">How to browse</h3>
-              <p className="text-[#FCEAAC]/80 mb-6 leading-relaxed font-cormorant italic font-semibold text-2xl md:text-3xl">
-                <strong className="text-[#FCEAAC] block mb-1 font-sans not-italic text-sm uppercase tracking-wider font-bold">Double Tap</strong>
-                to see how this product looks in your home.
-              </p>
-              <p className="text-[#FCEAAC]/80 mb-8 leading-relaxed font-cormorant italic font-semibold text-2xl md:text-3xl">
-                <strong className="text-[#FCEAAC] block mb-1 font-sans not-italic text-sm uppercase tracking-wider font-bold">Swipe Left & Right</strong>
-                to cycle through the collection.
-              </p>
-              <button className="bg-[#FCEAAC] text-[#4A0404] px-8 py-2.5 rounded-full font-bold text-sm md:text-base font-sans uppercase tracking-wide">Got it</button>
-            </motion.div>
-          </motion.div>
+        {showRedirectModal && (
+          <RedirectModal 
+            isOpen={showRedirectModal}
+            onClose={() => setShowRedirectModal(false)}
+            onConfirm={handleRedirectConfirm}
+          />
         )}
       </AnimatePresence>
 
-      {/* --- DETAILS POPUP --- */}
+      {/* Details Modal */}
       <AnimatePresence>
         {showDetails && currentProduct && (
-          <DetailsModal
-            product={currentProduct}
+          <DetailsModal 
+            product={currentProduct} 
             onClose={() => setShowDetails(false)}
             onBook={() => {
-              onPrimaryCtaClick?.(currentProduct, activeIndex);
-              setShowDetails(false);
+                setShowDetails(false);
+                onPrimaryCtaClick?.(currentProduct, activeIndex);
             }}
           />
+        )}
+      </AnimatePresence>
+
+      {/* Tutorial Overlay */}
+      <AnimatePresence>
+        {showTutorial && (
+           <motion.div 
+             initial={{ opacity: 0 }}
+             animate={{ opacity: 1 }}
+             exit={{ opacity: 0 }}
+             className="absolute inset-0 z-40 bg-black/40 backdrop-blur-[2px] flex flex-col items-center justify-center pointer-events-none"
+           >
+              <div className="bg-[#FCEAAC]/90 p-4 rounded-2xl shadow-2xl flex flex-col items-center">
+                 <DoubleTapIcon className="w-12 h-12 text-[#4A0404] animate-pulse mb-2" />
+                 <p className="text-[#4A0404] font-bold font-sans text-sm tracking-wide">DOUBLE TAP TO BOOK</p>
+                 <p className="text-[#4A0404]/70 font-serif italic mt-1">or swipe to explore</p>
+              </div>
+           </motion.div>
         )}
       </AnimatePresence>
 
